@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, Button } from 'react-native';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -10,7 +10,7 @@ const LoginScreen = () => {
     // Por simplicidad, aquí solo mostraremos un mensaje de inicio de sesión exitoso.
     alert('Inicio de sesión exitoso');
 
-    navigation.replace('Category');
+    navigation.navigate('Category');
   };
 
   return (

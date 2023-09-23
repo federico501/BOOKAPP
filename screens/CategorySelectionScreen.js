@@ -38,6 +38,7 @@ const CategorySelectionScreen = () => {
             </TouchableOpacity>
           ))}
         </View>
+        <Text>Categorías seleccionadas: {selectedCategories.join(', ')}</Text>
       </View>
     </ImageBackground>
   );
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+   backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
   categoryButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
   },
 });
 
