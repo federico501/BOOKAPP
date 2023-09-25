@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -11,6 +11,10 @@ const LoginScreen = ({ navigation }) => {
     alert('Inicio de sesión exitoso');
 
     navigation.navigate('Category');
+  };
+  const handleRegistration = () => {
+    // Navega a la pantalla de registro cuando se presiona el botón "Registro"
+    navigation.navigate('Register');
   };
 
   return (
@@ -33,10 +37,12 @@ const LoginScreen = ({ navigation }) => {
           value={password}
           secureTextEntry
         />
-        <Button
-          title="Iniciar Sesión"
-          onPress={handleLogin}
-        />
+         <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.registrationButton} onPress={handleRegistration}>
+          <Text style={styles.buttonText}>Registro</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -45,17 +51,18 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    resizeMode: 'cover',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'right',
   },
   content: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente para resaltar el formulario
-    padding: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 100,
     borderRadius: 10,
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 20,
@@ -68,7 +75,29 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 10,
     backgroundColor: 'white',
+    padding: 10,
   },
+  button: {
+    backgroundColor: '#3498db',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'right',
+
+  },
+  registrationButton: {
+    backgroundColor: '#27ae60',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
 });
 
 export default LoginScreen;

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'right',
   },
   content: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente para resaltar el formulario
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 10,
     backgroundColor: 'white',
+    alignItems: 'center',
   },
 });
 
