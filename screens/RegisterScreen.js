@@ -54,28 +54,30 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'right',
+    
   },
   content: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente para resaltar el formulario
-    padding: 20,
+    padding: 100,
     borderRadius: 10,
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 20,
+    marginBottom: 50,
   },
   input: {
-    width: '100%',
+    width: '150%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 16,
-    paddingHorizontal: 10,
+    marginBottom: 10,
+    paddingHorizontal: 20,
     backgroundColor: 'white',
     alignItems: 'center',
+    
   },
 });
 
