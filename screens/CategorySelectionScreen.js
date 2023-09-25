@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 
-const CategorySelectionScreen = () => {
+const CategorySelectionScreen = ({ navigation }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const toggleCategory = (category) => {
@@ -14,8 +14,11 @@ const CategorySelectionScreen = () => {
       setSelectedCategories([...selectedCategories, category]);
     }
   };
+  const handleHome = () => {
+    navigation.navigate('Home');
+  };
 
-  const categories = ['Ficción', 'No Ficción', 'Misterio', 'Ciencia Ficción', 'Romance', 'Aventura', 'Poesía'];
+  const categories = ['Ficción','Filosofía', 'Misterio', 'Economia', 'Romance', 'Aventura', 'Poesía'];
 
   return (
     <ImageBackground
@@ -36,7 +39,11 @@ const CategorySelectionScreen = () => {
             >
               <Text style={styles.categoryButtonText}>{category}</Text>
             </TouchableOpacity>
+            
           ))}
+           <TouchableOpacity style={styles.button} onPress={handleHome}>
+          <Text style={styles.buttonText}>Continuar</Text>
+        </TouchableOpacity>
         </View>
         <Text>Categorías seleccionadas: {selectedCategories.join(', ')}</Text>
       </View>
@@ -83,6 +90,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
+  },
+  button: {
+    backgroundColor: '#3498db',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'right',
+
   },
 });
 
