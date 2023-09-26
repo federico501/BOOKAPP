@@ -1,9 +1,13 @@
 // HomeScreen.js
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import ImagePicker from 'react-native-image-picker';
 
 const HomeScreen = ({ navigation }) => {
+
+
+
   const handleSearchBooks = () => {
     // Navegar a la pantalla de búsqueda de libros
     navigation.navigate('SearchBooks');
@@ -27,6 +31,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.content}>
         <Text style={styles.title}>Bienvenido a Tu Biblioteca</Text>
       </View>
+
       <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.iconButton} onPress={handleSearchBooks}>
           <Ionicons name="search" size={32} color="white" />
@@ -82,6 +87,32 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
     marginTop: 5,
+  },
+  selectedImage: {
+    width: 200,
+    height: 200,
+    resizeMode: 'cover',
+    marginBottom: 20,
+  },
+  cameraButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  galleryButton: {
+    position: 'absolute',
+    top: 20,
+    right: 140,
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

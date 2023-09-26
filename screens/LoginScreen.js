@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 
+
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  
 
   const handleLogin = () => {
     // Aquí puedes implementar la lógica de inicio de sesión, como validar las credenciales con tu backend o sistema de autenticación.
