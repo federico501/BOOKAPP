@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 import { firebaseConfig } from '../firebase-config';
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth'
 import {initializeApp} from 'firebase/app'
 import { useNavigation } from '@react-navigation/native';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { FacebookAuthProvider } from 'firebase/auth';
+
+
+
 
 
 const LoginScreen = () => {
@@ -38,9 +42,21 @@ const LoginScreen = () => {
   .catch(error=>{
     alert(error)
 }) 
+ };
+ const handleFacebookLogin = async () => {
+  const provider = new FacebookAuthProvider();
 
-  };
- 
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    alert('Inicio de sesión con Facebook exitoso');
+    console.log(user);
+    navigation.navigate('Category');
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
 
   return (
     <ImageBackground
@@ -68,6 +84,9 @@ const LoginScreen = () => {
         <TouchableOpacity onPress={handleCreateAccount} style={styles.registrationButton}>
           <Text style={styles.buttonText}>Crear cuenta</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={handleFacebookLogin} style={styles.facebookButton}>
+      <Text style={styles.buttonText}>Iniciar Sesión con Facebook</Text>
+    </TouchableOpacity>
       </View>
     </ImageBackground>
   );
