@@ -1,24 +1,46 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
+import { firebaseConfig } from '../firebase-config';
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth'
+import {initializeApp} from 'firebase/app'
+import { useNavigation } from '@react-navigation/native';
 
 
-const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const LoginScreen = () => {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   
-  
+  const navigation=useNavigation();
+  const app= initializeApp(firebaseConfig);
+  const auth= getAuth(app);
 
+  const handleCreateAccount= () => {
+    createUserWithEmailAndPassword(auth,email,password)
+    .then((userCredential)=>{
+      alert('cuenta creada')
+      const user= userCredential.user;
+      console.log(user)
+    })
+    .catch(error=>{
+        alert(error)
+    }) 
+  }
+  
   const handleLogin = () => {
-    // Aquí puedes implementar la lógica de inicio de sesión, como validar las credenciales con tu backend o sistema de autenticación.
-    // Por simplicidad, aquí solo mostraremos un mensaje de inicio de sesión exitoso.
-    alert('Inicio de sesión exitoso');
-
+  signInWithEmailAndPassword(auth,email,password)
+  .then((userCredential)=>{
+    alert('Inicio exitoso')
+    const user= userCredential.user;
+    console.log(user)
     navigation.navigate('Category');
+    
+  })
+  .catch(error=>{
+    alert(error)
+}) 
+
   };
-  const handleRegistration = () => {
-    // Navega a la pantalla de registro cuando se presiona el botón "Registro"
-    navigation.navigate('Register');
-  };
+ 
 
   return (
     <ImageBackground
@@ -40,11 +62,11 @@ const LoginScreen = ({ navigation }) => {
           value={password}
           secureTextEntry
         />
-         <TouchableOpacity style={styles.button} onPress={handleLogin}>
+         <TouchableOpacity  style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Iniciar Sesión</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.registrationButton} onPress={handleRegistration}>
-          <Text style={styles.buttonText}>Registro</Text>
+        <TouchableOpacity onPress={handleCreateAccount} style={styles.registrationButton}>
+          <Text style={styles.buttonText}>Crear cuenta</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
