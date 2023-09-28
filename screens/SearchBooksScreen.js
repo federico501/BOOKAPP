@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, TextInput, Button, Image, Dimensions, ScrollView } from 'react-native';
-import axios from 'axios';
+import { View, Text, StyleSheet, ImageBackground, TextInput, Button, Image, Dimensions, ScrollView, Linking } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
-
 const SearchBooksScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = () => {
-    axios.get(`https://openlibrary.org/search.json?q=${searchQuery}`)
-      .then((response) => {
-        const books = response.data.docs.map((book) => ({
-          title: book.title,
-          coverUrl: `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`,
-          key: book.key,
+    // Utiliza la API de Google Books para buscar libros
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchQuery}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const books = data.items.map((book) => ({
+          title: book.volumeInfo.title,
+          coverUrl: book.volumeInfo.imageLinks?.thumbnail,
+          key: book.id,
         }));
         setSearchResults(books);
       })
@@ -22,6 +22,7 @@ const SearchBooksScreen = () => {
       });
   };
 
+ 
 
   // Dividir los resultados en filas de tres elementos
   const chunkArray = (arr, chunkSize) => {
@@ -64,7 +65,7 @@ const SearchBooksScreen = () => {
                   <Button
                     title="Leer"
                     onPress={() => {
-                      Linking.openURL(`https://openlibrary.org${item.key}`);
+                      Linking.openURL(`https://books.google.com?id=${item.key}`);
                     }}
                   />
                 </View>
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 30,
+    padding: 20,
     borderRadius: 10,
     alignItems: 'center',
   },
