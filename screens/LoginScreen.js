@@ -3,20 +3,22 @@ import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity } 
 import { firebaseConfig } from '../firebase-config';
 import {initializeApp} from 'firebase/app'
 import { useNavigation } from '@react-navigation/native';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { FacebookAuthProvider } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, FacebookAuthProvider,signInWithPopup} from 'firebase/auth';
 
 
 
 
+
+const app= initializeApp(firebaseConfig);
+const auth=getAuth(app);
 
 const LoginScreen = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   
   const navigation=useNavigation();
-  const app= initializeApp(firebaseConfig);
-  const auth= getAuth(app);
+
+ 
 
   const handleCreateAccount= () => {
     createUserWithEmailAndPassword(auth,email,password)
@@ -43,17 +45,19 @@ const LoginScreen = () => {
     alert(error)
 }) 
  };
- const handleFacebookLogin = async () => {
-  const provider = new FacebookAuthProvider();
 
+ const handleFacebookLogin = async () => {
+ 
+  
   try {
-    const result = await signInWithPopup(auth, provider);
+    const provider = new FacebookAuthProvider();
+    const result =await signInWithPopup(auth, provider);
     const user = result.user;
     alert('Inicio de sesión con Facebook exitoso');
     console.log(user);
     navigation.navigate('Category');
   } catch (error) {
-    alert(error.message);
+    console.log(error.message);
   }
 };
 
