@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, ScrollView, Modal, FlatList, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios'; // Importa axios para realizar solicitudes HTTP
@@ -9,23 +9,19 @@ const HomeScreen = ({ navigation }) => {
   const [randomBooks, setRandomBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
 
+  const getRandomBooks = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        'https://www.googleapis.com/books/v1/volumes?q=random&maxResults=10'
+      );
+      const books = response.data.items || [];
+      setRandomBooks(books);
+    } catch (error) {
+      console.error('Error al obtener libros aleatorios:', error);
+    }
+  }, []);
+
   useEffect(() => {
-    // Función para obtener libros aleatorios desde la API de Google Books
-    const getRandomBooks = async () => {
-      try {
-        const response = await axios.get(
-          'https://www.googleapis.com/books/v1/volumes?q=random&maxResults=10'
-        );
-        const books = response.data.items || [];
-        setRandomBooks(books);
-      } catch (error) {
-        console.error('Error al obtener libros aleatorios:', error);
-      }
-    };
-
-    // Llama a la función para obtener libros aleatorios cuando se carga la pantalla
-    getRandomBooks();
-
     // Función para obtener el nombre del usuario desde Firestore
     const fetchUserName = async () => {
       try {
@@ -44,8 +40,15 @@ const HomeScreen = ({ navigation }) => {
 
     // Llama a la función para obtener el nombre del usuario cuando se carga la pantalla
     fetchUserName();
+    // Llama a la función para obtener libros aleatorios cuando se carga la pantalla
+    getRandomBooks();
 
-  }, []);
+    // Establece un temporizador para actualizar los libros cada 30 segundos
+    const timerId = setInterval(getRandomBooks, 30000);
+
+    // Limpia el temporizador cuando se desmonta el componente
+    return () => clearInterval(timerId);
+  }, [getRandomBooks]);
 
   const handleSearchBooks = () => {
     navigation.navigate('SearchBooks');

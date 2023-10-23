@@ -97,7 +97,7 @@ const UpdateAccountScreen = () => {
       };
 
       const db = getFirestore(appFirebase);
-      const userDocRef = doc(db, 'Usuario', 'ID_DEL_USUARIO'); // Reemplaza 'ID_DEL_USUARIO' con el ID real del usuario
+      const userDocRef = doc(db, 'Usuario', 'ID_DEL_USUARIO'); 
 
       // Actualiza los datos del usuario en Firestore
       await setDoc(userDocRef, updatedData, { merge: true });

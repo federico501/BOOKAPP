@@ -1,11 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
 const CategorySelectionScreen = ({ navigation }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const db = getFirestore(); // Obtén una referencia a Firestore
+
+  // Obtén las categorías seleccionadas del usuario desde Firestore
+  useEffect(() => {
+    const loadSelectedCategories = async () => {
+      try {
+        const userDocRef = doc(db, 'usuarios', 'ID_DEL_USUARIO'); // Reemplaza 'ID_DEL_USUARIO' con el ID real del usuario
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          if (userData.selectedCategories) {
+            setSelectedCategories(userData.selectedCategories);
+          }
+        }
+      } catch (error) {
+        console.error('Error al cargar las categorías seleccionadas:', error);
+      }
+    };
+
+    loadSelectedCategories();
+  }, []);
 
   const toggleCategory = (category) => {
-    // Función para alternar la selección de categorías
     if (selectedCategories.includes(category)) {
       // Si la categoría ya está seleccionada, quítala de la lista
       setSelectedCategories(selectedCategories.filter((cat) => cat !== category));
@@ -14,11 +36,21 @@ const CategorySelectionScreen = ({ navigation }) => {
       setSelectedCategories([...selectedCategories, category]);
     }
   };
-  const handleHome = () => {
-    navigation.navigate('Home');
+
+  const handleHome = async () => {
+    try {
+      const userDocRef = doc(db, 'categorias', 'ID_DEL_USUARIO'); // Reemplaza 'ID_DEL_USUARIO' con el ID real del usuario
+
+      // Actualiza las categorías seleccionadas en Firestore
+      await setDoc(userDocRef, { selectedCategories }, { merge: true });
+
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Error al actualizar las categorías seleccionadas:', error);
+    }
   };
 
-  const categories = ['Ficción','Filosofía', 'Misterio', 'Economia', 'Romance', 'Aventura', 'Poesía'];
+  const categories = ['Ficción', 'Filosofía', 'Misterio', 'Economia', 'Romance', 'Aventura', 'Poesía'];
 
   return (
     <ImageBackground
@@ -39,11 +71,10 @@ const CategorySelectionScreen = ({ navigation }) => {
             >
               <Text style={styles.categoryButtonText}>{category}</Text>
             </TouchableOpacity>
-            
           ))}
-           <TouchableOpacity style={styles.button} onPress={handleHome}>
-          <Text style={styles.buttonText}>Continuar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleHome}>
+            <Text style={styles.buttonText}>Continuar</Text>
+          </TouchableOpacity>
         </View>
         <Text>Categorías seleccionadas: {selectedCategories.join(', ')}</Text>
       </View>
@@ -59,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-   backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 50,
     borderRadius: 10,
     alignItems: 'center',
@@ -98,7 +129,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     alignItems: 'right',
-
   },
 });
 

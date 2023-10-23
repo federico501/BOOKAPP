@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, ImageBackground, Button } from 'react-native';
 const WelcomeScreen = ({ navigation }) => {
   const handleIniciarPress = () => {
     // Navega a la siguiente pantalla cuando se presiona el botón "Iniciar"
-    navigation.navigate('Login'); // Reemplaza 'NextScreen' con el nombre de tu siguiente pantalla
+    navigation.navigate('Login');
   };
 
   return (
