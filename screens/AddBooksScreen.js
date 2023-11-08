@@ -7,6 +7,7 @@ const AddBooksScreen = () => {
   const [author, setAuthor] = useState('');
   const [link, setLink] = useState('');
   const [books, setBooks] = useState([]); // Estado para almacenar los libros
+  const [isBookListVisible, setIsBookListVisible] = useState(false);
 
   const db = getFirestore();
 
@@ -67,6 +68,10 @@ const AddBooksScreen = () => {
     }
   };
 
+  const toggleBookList = () => {
+    setIsBookListVisible(!isBookListVisible);
+  };
+
   return (
     <ImageBackground
       source={require('../assets/Screen2.png')} // Ruta de la imagen de fondo
@@ -78,33 +83,37 @@ const AddBooksScreen = () => {
         <TextInput
           style={styles.input}
           value={title}
-          onChangeText={text => setTitle(text)}
+          onChangeText={(text) => setTitle(text)}
         />
         <Text style={styles.title}>Autor del libro:</Text>
         <TextInput
           style={styles.input}
           value={author}
-          onChangeText={text => setAuthor(text)}
+          onChangeText={(text) => setAuthor(text)}
         />
         <Text style={styles.title}>Enlace del libro:</Text>
         <TextInput
           style={styles.input}
           value={link}
-          onChangeText={text => setLink(text)}
+          onChangeText={(text) => setLink(text)}
         />
         <Button title="Guardar Libro" onPress={handleSave} />
-        <Text style={styles.title}>Libros guardados:</Text>
-        {/* Lista de libros */}
-        <FlatList
-          data={books}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => {/* Acción al hacer clic en un libro */}}>
-              <Text>Título: {item.title}</Text>
-              <Text>Enlace: {item.link}</Text>
-            </TouchableOpacity>
-          )}
+        <Button
+          title={isBookListVisible ? 'Ocultar Libros' : 'Ver Libros Guardados'}
+          onPress={toggleBookList}
         />
+        {isBookListVisible && (
+          <FlatList
+            data={books}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => {/* Acción al hacer clic en un libro */}}>
+                <Text>Título: {item.title}</Text>
+                <Text>Enlace: {item.link}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        )}
       </View>
     </ImageBackground>
   );
