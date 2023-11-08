@@ -42,13 +42,14 @@ const CategorySelectionScreen = ({ navigation }) => {
       const userDocRef = doc(db, 'categorias', 'ID_DEL_USUARIO'); // Reemplaza 'ID_DEL_USUARIO' con el ID real del usuario
 
       // Actualiza las categorías seleccionadas en Firestore
-      await setDoc(userDocRef, { selectedCategories }, { merge: true });
+      // await setDoc(userDocRef, { selectedCategories }, { merge: true });
 
-      navigation.navigate('Home');
+      navigation.replace('Home');
     } catch (error) {
       console.error('Error al actualizar las categorías seleccionadas:', error);
     }
   };
+
 
   const categories = ['Ficción', 'Filosofía', 'Misterio', 'Economia', 'Romance', 'Aventura', 'Poesía'];
 
@@ -72,7 +73,7 @@ const CategorySelectionScreen = ({ navigation }) => {
               <Text style={styles.categoryButtonText}>{category}</Text>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity style={styles.button} onPress={handleHome}>
+          <TouchableOpacity style={styles.button} onPress={ handleHome}>
             <Text style={styles.buttonText}>Continuar</Text>
           </TouchableOpacity>
         </View>
